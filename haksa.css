@@ -134,3 +134,7 @@ body.light-mode .day {
 body.light-mode .event {
   color: #0070f3;
 }
+
+body.theme-transition {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}

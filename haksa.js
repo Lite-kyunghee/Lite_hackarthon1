@@ -83,3 +83,12 @@ nextBtn.addEventListener("click", () => {
 });
 
 fetchSchedule();
+
+/* ============================= */
+/* 🌗 저장된 테마(라이트/다크) 불러오기 */
+/* ============================= */
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "light") {
+  document.body.classList.add("light-mode");
+}
+

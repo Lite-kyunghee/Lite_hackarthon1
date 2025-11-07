@@ -1,62 +1,67 @@
 // Helper
-const $  = (s, c=document) => c.querySelector(s);
-const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
+const $ = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
 // Footer year
-const year = $('#year'); 
+const year = $('#year');
 if (year) year.textContent = new Date().getFullYear();
 
 /* ========== Sidebar ========== */
-const openSidebar  = () => { 
-  document.body.classList.add('is-open');  
-  $('#sidebar').setAttribute('aria-hidden','false'); 
-  $('#overlay').setAttribute('aria-hidden','false'); 
+const openSidebar = () => {
+  document.body.classList.add('is-open');
+  $('#sidebar').setAttribute('aria-hidden', 'false');
+  $('#overlay').setAttribute('aria-hidden', 'false');
 };
-const closeSidebar = () => { 
-  document.body.classList.remove('is-open'); 
-  $('#sidebar').setAttribute('aria-hidden','true');  
-  $('#overlay').setAttribute('aria-hidden','true');  
+const closeSidebar = () => {
+  document.body.classList.remove('is-open');
+  $('#sidebar').setAttribute('aria-hidden', 'true');
+  $('#overlay').setAttribute('aria-hidden', 'true');
 };
 
 $('#openSidebar').addEventListener('click', openSidebar);
 $('#closeSidebar').addEventListener('click', closeSidebar);
 $('#overlay').addEventListener('click', closeSidebar);
-window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeSidebar(); });
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeSidebar();
+});
 
 /* ========== Login ========== */
 $('#loginBtn').addEventListener('click', () => {
-  window.location.href = "login.html";
+  window.location.href = 'login.html';
 });
 
 /* ========== Search (stub) ========== */
-$('#searchForm').addEventListener('submit', (e)=>{
+$('#searchForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const q = ($('#q').value || '').trim();
-  if(!q) return alert('검색어를 입력하세요.');
+  if (!q) return alert('검색어를 입력하세요.');
   alert(`검색 기능 준비 중입니다.\n입력한 검색어: ${q}`);
 });
 
 /* ========== Timetable grid ========== */
-(function buildTimetable(){
+(function buildTimetable() {
   const area = $('.timetable .cells');
-  if(!area) return;
-  const rows=5, cols=6;
-  for(let i=0;i<rows*cols;i++){
+  if (!area) return;
+  const rows = 5,
+    cols = 6;
+  for (let i = 0; i < rows * cols; i++) {
     area.appendChild(document.createElement('div'));
   }
 })();
 
 /* ========== Widget modal ========== */
 const modal = $('#widgetModal');
-const openModal  = () => document.body.classList.add('is-modal');
+const openModal = () => document.body.classList.add('is-modal');
 const closeModal = () => document.body.classList.remove('is-modal');
 
 $('#fabAdd').addEventListener('click', openModal);
 $('#closeModal').addEventListener('click', closeModal);
-modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeModal();
+});
 
 /* ========== Widget factory ========== */
-function createWidget(type){
+function createWidget(type) {
   const card = document.createElement('article');
   card.className = 'widget';
   card.dataset.widget = type;
@@ -86,43 +91,50 @@ function createWidget(type){
   const body = document.createElement('div');
   body.className = 'widget-body';
 
-  switch(type){
+  switch (type) {
     case 'timetable': {
       h3.textContent = '시간표';
-      const wrap = document.createElement('div'); 
+      const wrap = document.createElement('div');
       wrap.className = 'timetable';
-      const cells = document.createElement('div'); 
+      const cells = document.createElement('div');
       cells.className = 'cells';
-      for(let i=0;i<30;i++) cells.appendChild(document.createElement('div'));
-      wrap.appendChild(cells); 
-      body.appendChild(wrap); 
+      for (let i = 0; i < 30; i++)
+        cells.appendChild(document.createElement('div'));
+      wrap.appendChild(cells);
+      body.appendChild(wrap);
       break;
     }
     case 'lunch': {
       h3.textContent = '오늘의 급식';
-      const ul = document.createElement('ul'); 
+      const ul = document.createElement('ul');
       ul.className = 'lunch-list';
-      ['밥 · 국 · 메인 반찬','부반찬 A','부반찬 B','디저트(과일/요거트)'].forEach(t=>{
-        const li = document.createElement('li'); 
-        li.textContent = t; 
+      [
+        '밥 · 국 · 메인 반찬',
+        '부반찬 A',
+        '부반찬 B',
+        '디저트(과일/요거트)',
+      ].forEach((t) => {
+        const li = document.createElement('li');
+        li.textContent = t;
         ul.appendChild(li);
       });
-      body.appendChild(ul); 
+      body.appendChild(ul);
       break;
     }
     case 'exam-schedule': {
       h3.textContent = '수행평가 일정';
-      body.innerHTML = '<p>다가오는 수행평가 일정이 표시됩니다. (연동 예정)</p>'; 
+      body.innerHTML =
+        '<p>다가오는 수행평가 일정이 표시됩니다. (연동 예정)</p>';
       break;
     }
     case 'calendar': {
       h3.textContent = '캘린더';
-      body.innerHTML = '<p>월간 학사일정 위젯입니다. (연동 예정)</p>'; 
+      body.innerHTML = '<p>월간 학사일정 위젯입니다. (연동 예정)</p>';
       break;
     }
     case 'notice': {
       h3.textContent = '알림';
-      body.innerHTML = '<p>공지/알림 모아보기. (연동 예정)</p>'; 
+      body.innerHTML = '<p>공지/알림 모아보기. (연동 예정)</p>';
       break;
     }
     default: {
@@ -144,8 +156,8 @@ function updateWidgetHint() {
 }
 
 /* ========== 모달에서 위젯 추가 ========== */
-$$('.picker-item', modal).forEach(btn=>{
-  btn.addEventListener('click', ()=>{
+$$('.picker-item', modal).forEach((btn) => {
+  btn.addEventListener('click', () => {
     const w = createWidget(btn.dataset.widget);
     $('#widgetGrid').appendChild(w);
     updateWidgetHint(); // 추가 후 문구 갱신
@@ -154,8 +166,8 @@ $$('.picker-item', modal).forEach(btn=>{
 });
 
 /* ========== 초기 위젯 삭제 버튼 ========== */
-$$('.remove-widget').forEach(btn=>{
-  btn.addEventListener('click', (e)=> {
+$$('.remove-widget').forEach((btn) => {
+  btn.addEventListener('click', (e) => {
     const card = e.currentTarget.closest('.widget');
     setTimeout(() => {
       card.remove();
@@ -200,4 +212,103 @@ setTimeout(() => {
   document.body.classList.remove('theme-transition');
 }, 600);
 
+// 📅 오늘의 급식 위젯 업데이트
+async function updateLunchMenu() {
+  const widget = document.querySelector(".widget[data-type='lunch']");
+  const content = widget.querySelector('.widget-content');
 
+  try {
+    const response = await fetch('11월_급식표.xlsx');
+    const arrayBuffer = await response.arrayBuffer();
+    const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+
+    // 첫 번째 시트 읽기
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const data = XLSX.utils.sheet_to_json(sheet);
+
+    // 오늘 날짜 구하기 (예: 11/08)
+    const today = new Date();
+    const month = today.getMonth() + 1; // 0부터 시작
+    const day = today.getDate();
+    const todayStr = `${month}/${day}`; // 예: "11/8"
+
+    // 급식 데이터에서 오늘 날짜 찾기
+    const todayMenu = data.find((row) => {
+      const dateStr = String(row['날짜']).replace(/\s/g, '');
+      return dateStr.includes(`${month}월`) && dateStr.includes(`${day}일`);
+    });
+
+    // 결과 표시
+    if (todayMenu && todayMenu['급식']) {
+      const items = todayMenu['급식']
+        .split('\n')
+        .map((i) => `<li>${i.trim()}</li>`)
+        .join('');
+      content.innerHTML = `<ul>${items}</ul>`;
+    } else {
+      content.textContent = '오늘의 급식은 없습니다';
+    }
+  } catch (error) {
+    console.error('급식 데이터를 불러오는 중 오류 발생:', error);
+    content.textContent = '오늘의 급식은 없습니다';
+  }
+}
+
+// 페이지 로드 시 실행
+window.addEventListener('DOMContentLoaded', () => {
+  updateLunchMenu();
+});
+
+/* ============================= */
+/* 🍱 오늘의 급식 자동 표시 기능 (날짜 표시 추가) */
+/* ============================= */
+
+async function loadTodayLunch() {
+  const listElement = document.getElementById('todayLunch');
+  if (!listElement) return;
+
+  try {
+    // 급식 데이터 불러오기
+    const response = await fetch('data/meals.json');
+    const meals = await response.json();
+
+    // 오늘 날짜 구하기
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    const todayStr = `${month}월 ${day}일`;
+
+    // 주말(토,일)에는 급식 없음
+    const dayOfWeek = today.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      listElement.innerHTML = `<li>${todayStr} 🍽️ 오늘의 급식은 없습니다</li>`;
+      return;
+    }
+
+    // 날짜 비교 (공백/‘2024년’ 제거)
+    const meal = meals.find((item) => {
+      const cleanDate = item.날짜.replace(/\s/g, '').replace('2024년', '');
+      const target = todayStr.replace(/\s/g, '');
+      return cleanDate === target;
+    });
+
+    // 결과 표시
+    if (밥) {
+      const menuItems = meal.메뉴
+        .split(',')
+        .map((m) => `<li>${m.trim()}</li>`)
+        .join('');
+      listElement.innerHTML =
+        `<li><strong>${todayStr} 급식 🍱</strong></li>` + menuItems;
+    } else {
+      listElement.innerHTML = `<li>${todayStr} 🍽️ 오늘의 급식은 없습니다</li>`;
+    }
+  } catch (err) {
+    console.error('급식 데이터를 불러오는 중 오류:', err);
+    listElement.innerHTML = `<li>${todayStr} ❌ 급식 정보를 불러오지 못했습니다</li>`;
+  }
+}
+
+// 페이지 로드 시 실행
+document.addEventListener('DOMContentLoaded', loadTodayLunch);

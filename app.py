@@ -1,74 +1,66 @@
-# app.py
-return jsonify({'msg': 'Assignment created', 'id': assignment.id}), 201
+from flask import Flask, jsonify, send_from_directory, request
+import random, os
+
+app = Flask(__name__, static_folder='.', static_url_path='')
+
+# ======================
+# 메인 페이지 라우팅
+# ======================
+@app.route('/')
+def index():
+    return send_from_directory('.', 'gache.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    """CSS, JS 등 정적 파일 제공"""
+    return send_from_directory('.', path)
+
+# ======================
+# 채점 API
+# ======================
+@app.route('/api/grade', methods=['POST'])
+def grade_exam():
+    try:
+        data = request.get_json()
+        grade = data.get('grade')
+        exam_type = data.get('exam_type')
+        subject = data.get('subject')
+        answers = data.get('answers', [])
+
+        # 랜덤 모범답 생성
+        correct = [random.randint(1, 5) for _ in range(len(answers))]
+
+        # 채점
+        details = []
+        correct_count = 0
+        for i, (stu_ans, cor_ans) in enumerate(zip(answers, correct), start=1):
+            is_correct = stu_ans == cor_ans
+            if is_correct:
+                correct_count += 1
+            details.append({
+                "number": i,
+                "student": stu_ans,
+                "correct": cor_ans,
+                "is_correct": is_correct
+            })
+
+        percent = round(correct_count / len(answers) * 100, 1)
+        result = {
+            "ok": True,
+            "grade": grade,
+            "exam_type": exam_type,
+            "subject": subject,
+            "score": correct_count,
+            "total": len(answers),
+            "percent": percent,
+            "details": details
+        }
+        return jsonify(result)
+    except Exception as e:
+        print("❌ 오류 발생:", e)
+        return jsonify({"ok": False, "msg": "서버 처리 중 오류 발생"}), 500
 
 
-# ------------------------------
-# 제출: 학생이 과제 제출
-# ------------------------------
-@app.route('/api/assignments/<int:assignment_id>/submit', methods=['POST'])
-@jwt_required()
-def submit_assignment(assignment_id):
-    identity = get_jwt_identity()
-    # 학생만 제출 가능(예제)
-    if identity['role'] != 'student':
-        return jsonify({'msg': 'Only students can submit'}), 403
-
-
-if 'file' not in request.files:
-    return jsonify({'msg': 'No file provided'}), 400
-
-
-f = request.files['file']
-filename = f"{int(datetime.utcnow().timestamp())}_{f.filename}"
-save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-f.save(save_path)
-
-
-submission = Submission(
-assignment_id=assignment_id,
-student_id=identity['id'],
-file_path=filename,
-submitted_at=datetime.utcnow()
-)
-db.session.add(submission)
-db.session.commit()
-
-
-return jsonify({'msg': 'Submitted', 'submission_id': submission.id}), 201
-
-
-# ------------------------------
-# 업로드된 파일 제공 (개발용)
-# ------------------------------
-@app.route('/uploads/<path:filename>')
-def uploaded_file(filename):
-# 로컬 업로드 폴더에서 파일을 전달. 운영시 접근 제어 추가 필요
-return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
-
-# ------------------------------
-# 간단한 과제 조회(예제)
-# ------------------------------
-@app.route('/api/classes/<int:class_id>/assignments', methods=['GET'])
-@jwt_required()
-def list_assignments(class_id):
-assignments = Assignment.query.filter_by(class_id=class_id).all()
-# JSON으로 직렬화하여 반환 (간단 필드만 포함)
-data = []
-for a in assignments:
-data.append({
-'id': a.id,
-'title': a.title,
-'description': a.description,
-'due_date': a.due_date.isoformat() if a.due_date else None,
-'attachment_url': f"/uploads/{a.attachment}" if a.attachment else None
-})
-return jsonify(data)
-
-
-# ------------------------------
-# 실행부
-# ------------------------------
 if __name__ == '__main__':
-# 개발용 실행 (디버그 모드)
-app.run(host='0.0.0.0', port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)

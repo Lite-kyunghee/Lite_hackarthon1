@@ -1,43 +1,42 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>L.I.T.E</title>
-    <link rel="stylesheet" href="lite_hackathon.css" />
-  </head>
-  <body>
-    <!-- 사이드바 오버레이 -->
-    <div class="overlay" id="overlay" aria-hidden="true"></div>
+<head>
+  <!-- lite_hackathon.html의 head 안에 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L.I.T.E</title>
+  <link rel="stylesheet" href="lite_hackathon.css" />
+</head>
+<body>
+  <!-- 사이드바 오버레이 -->
+  <div class="overlay" id="overlay" aria-hidden="true"></div>
 
-    <!-- 좌측 사이드바 (부가기능) -->
-    <aside
-      id="sidebar"
-      class="sidebar"
-      aria-label="부가기능 내비게이션"
-      aria-hidden="true"
-    >
-      <header class="sidebar-header">
-        <strong>부가기능</strong>
-        <button
-          class="icon-btn sm"
-          id="closeSidebar"
-          aria-label="사이드바 닫기"
-        >
-          <!-- X icon -->
-          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M6 6l12 12M18 6L6 18"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
-        </button>
-        <span id="widgetHint" class="widget-hint"
-          >( + 버튼을 눌러 위젯을 추가하세요 )</span
-        >
-      </header>
+  <!-- 좌측 사이드바 (부가기능) -->
+  <aside id="sidebar" class="sidebar" aria-label="부가기능 내비게이션" aria-hidden="true">
+    <header class="sidebar-header">
+      <strong>부가기능</strong>
+      <button class="icon-btn sm" id="closeSidebar" aria-label="사이드바 닫기">
+        <!-- X icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <span id="widgetHint" class="widget-hint">( + 버튼을 눌러 위젯을 추가하세요 )</span>
+    </header>
+
+    <nav class="sidebar-menu">
+      <a href="suhang.html" class="menu-item">📝 수행평가</a>
+      <a href="#" class="menu-item">📊 성적조회</a>
+      <a href="#" class="menu-item">✅ 정기고사 모범답</a>
+      <a href="gache.html" class="menu-item">🧮 정기고사 가채점</a>
+      <a href="#" class="menu-item">📚 모의고사 학습</a>
+      <a href="#" class="menu-item">🔔 알림신청</a>
+      <a href="#" class="menu-item">🗂️ 경희 게시판</a>
+      <a href="#" class="menu-item">💼 포트폴리오</a>
+      <a href="#" class="menu-item">🧭 진로상담</a>
+      <a href="haksa.html" class="menu-item">🗓️ 학교일정</a>
+    </nav>
 
       <nav class="sidebar-menu">
         <a href="suhang.html" class="menu-item">📝 수행평가</a>
@@ -140,38 +139,25 @@
         />
       </form>
 
-      <!-- 위젯 + 플러스 묶음 -->
-      <div class="stack">
-        <!-- 위젯 그리드 -->
-        <section id="widgetGrid" class="widget-grid" aria-label="위젯 영역">
-          <!-- 위젯: 시간표 -->
-          <article class="widget" data-widget="timetable">
-            <header class="widget-header">
-              <h3>시간표</h3>
-              <button
-                class="icon-btn sm remove-widget"
-                title="위젯 삭제"
-                aria-label="위젯 삭제"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M6 6l12 12M18 6L6 18"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
-                </svg>
-              </button>
-            </header>
-            <div class="widget-body">
-              <div class="timetable"><div class="cells"></div></div>
-            </div>
-          </article>
+        <!-- 위젯: 오늘의 급식 -->
+        <article class="widget" data-widget="lunch">
+          <header class="widget-header">
+            <h3>오늘의 급식</h3>
+            <button class="icon-btn sm remove-widget" title="위젯 삭제" aria-label="위젯 삭제">
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+          </header>
+
+          <div class="widget-body">
+            <ul class="lunch-list" id="todayLunch">
+              <li>로딩 중...</li> <!-- JS에서 자동 교체 -->
+            </ul>
+          </div>
+        </article>
+
+      </section>
 
           <!-- 위젯: 오늘의 급식 -->
           <article class="widget" data-widget="lunch">

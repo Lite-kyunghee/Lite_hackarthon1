@@ -1,127 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>L.I.T.E</title>
-
-  <!-- 스타일 -->
-  <link rel="stylesheet" href="lite_hackathon.css" />
-  <!-- Font Awesome (아이콘) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>경희고 스마트 플랫폼</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 사이드바 오버레이 -->
-  <div class="overlay" id="overlay"></div>
+  <!-- ===== 상단 배경 이미지 ===== -->
+  <div class="background"></div>
 
-  <!-- 사이드바: 부가기능 -->
-  <aside id="sidebar" class="sidebar" aria-label="부가기능">
-    <header class="sidebar-header">
-      <strong>부가기능</strong>
-      <button class="icon-btn" id="closeSidebar" aria-label="사이드바 닫기"><i class="fa-solid fa-xmark"></i></button>
-    </header>
-    <nav class="sidebar-menu">
-      <a href="#" class="menu-item">📝 수행평가</a>
-      <a href="#" class="menu-item">📊 성적조회</a>
-      <a href="#" class="menu-item">✅ 정기고사 모범답</a>
-      <a href="#" class="menu-item">🧮 정기고사 가채점</a>
-      <a href="#" class="menu-item">📚 모의고사 학습</a>
-      <a href="#" class="menu-item">🔔 알림신청</a>
-      <a href="#" class="menu-item">🗂️ 경희 게시판</a>
-      <a href="#" class="menu-item">💼 포트폴리오</a>
-      <a href="#" class="menu-item">🧭 진로상담</a>
-      <a href="#" class="menu-item">🗓️ 학교일정</a>
-    </nav>
-    <footer class="sidebar-footer">© <span id="year"></span> L.I.T.E</footer>
-  </aside>
-
-  <!-- 헤더 -->
+  <!-- ===== 헤더 ===== -->
   <header class="header">
-    <button class="icon-btn" id="openSidebar" aria-label="메뉴 열기">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-
-    <!-- 중앙 로고(문자) — 나중에 아이콘으로 대체 예정 -->
-    <div class="logo">L.I.T.E</div>
-
-    <!-- 우측 로그인 -->
-    <button class="icon-btn circle" id="loginBtn" title="로그인">
-      <i class="fa-solid fa-right-to-bracket"></i>
-    </button>
+    <h1 class="logo">경희고 스마트 플랫폼</h1>
+    <nav class="nav">
+      <a href="#features">주요 기능</a>
+      <a href="#ai">AI 상담</a>
+      <a href="#login">로그인</a>
+    </nav>
   </header>
 
-  <!-- 메인 -->
-  <main class="container">
-    <!-- 검색 -->
-    <form class="search" id="searchForm" role="search" aria-label="사이트 검색">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input id="q" type="search" placeholder="무엇이든 물어보세요..." autocomplete="off" />
-    </form>
+  <!-- ===== 메인 소개 영역 ===== -->
+  <section class="main">
+    <h2>리로스쿨 + 팀즈, <br />경희고를 위한 통합 플랫폼</h2>
+    <p>
+      수행평가, 공지사항, 파일 공유, 채팅, 일정 관리, 그리고 AI 진로상담까지 —<br />
+      하나의 웹사이트에서 모두 해결하세요.
+    </p>
+    <button id="startBtn">지금 시작하기</button>
+  </section>
 
-    <!-- 위젯 그리드 -->
-    <section id="widgetGrid" class="widget-grid" aria-label="위젯 영역">
-      <!-- 기본 위젯: 시간표 -->
-      <article class="widget" data-widget="timetable">
-        <header class="widget-header">
-          <h3>시간표</h3>
-          <button class="icon-btn sm remove-widget" title="위젯 삭제"><i class="fa-solid fa-xmark"></i></button>
-        </header>
-        <div class="widget-body">
-          <div class="timetable">
-            <!-- 5x6 예시 그리드 -->
-            <div class="cells">
-              <!-- JS로 5x6 칸 생성 -->
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- 기본 위젯: 오늘의 급식 -->
-      <article class="widget" data-widget="lunch">
-        <header class="widget-header">
-          <h3>오늘의 급식</h3>
-          <button class="icon-btn sm remove-widget" title="위젯 삭제"><i class="fa-solid fa-xmark"></i></button>
-        </header>
-        <div class="widget-body">
-          <ul class="lunch-list">
-            <li>밥 · 국 · 메인 반찬</li>
-            <li>부반찬 A</li>
-            <li>부반찬 B</li>
-            <li>디저트(과일/요거트)</li>
-          </ul>
-        </div>
-      </article>
-    </section>
-
-    <!-- 플로팅 + 버튼 -->
-    <button id="fabAdd" class="fab" title="위젯 추가">
-      <i class="fa-solid fa-plus"></i>
-    </button>
-  </main>
-
-  <!-- 위젯 추가 모달 -->
-  <div class="modal" id="widgetModal" aria-hidden="true" role="dialog" aria-label="위젯 추가">
-    <div class="modal-card">
-      <header class="modal-header">
-        <strong>위젯 추가</strong>
-        <button class="icon-btn" id="closeModal" aria-label="모달 닫기"><i class="fa-solid fa-xmark"></i></button>
-      </header>
-      <div class="modal-body">
-        <div class="widget-picker">
-          <button class="picker-item" data-widget="timetable">🗓️ 시간표</button>
-          <button class="picker-item" data-widget="lunch">🍱 오늘의 급식</button>
-          <button class="picker-item" data-widget="exam-schedule">📝 수행평가 일정</button>
-          <button class="picker-item" data-widget="calendar">📆 캘린더</button>
-          <button class="picker-item" data-widget="notice">🔔 알림</button>
-        </div>
+  <!-- ===== 주요 기능 섹션 ===== -->
+  <section id="features" class="features">
+    <h3>📘 주요 기능</h3>
+    <div class="feature-grid">
+      <div class="feature">
+        <h4>학사 관리</h4>
+        <p>공지사항, 수행평가, 성적조회, 시간표 등 리로스쿨 핵심 기능을 더 간편하게 제공합니다.</p>
       </div>
-      <footer class="modal-footer">
-        <small>원하는 위젯을 클릭하면 바로 추가됩니다.</small>
-      </footer>
+      <div class="feature">
+        <h4>소통 및 협업</h4>
+        <p>채팅, 파일 공유, 과제 제출, 화상회의 등 팀즈의 실시간 협업 기능을 통합했습니다.</p>
+      </div>
+      <div class="feature">
+        <h4>AI 진로상담</h4>
+        <p>AI가 학생의 성적과 관심사를 분석하여 맞춤형 진로 방향을 제시합니다.</p>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- 스크립트 -->
-  <script src="lite_hackathon.js"></script>
+  <!-- ===== 푸터 ===== -->
+  <footer class="footer">
+    <p>© 2025 경희고 스마트 플랫폼 팀 | All Rights Reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

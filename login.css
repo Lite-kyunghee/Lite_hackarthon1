@@ -129,3 +129,63 @@ body {
     font-size: 28px;
   }
 }
+
+body.light-mode {
+  background-color: #f5f5f5;
+  color: #222;
+}
+
+/* 입력창, 버튼 등 색상 반전 */
+body.light-mode input,
+body.light-mode button {
+  background-color: #fff;
+  color: #222;
+  border-color: #ccc;
+}
+
+/* ====================== */
+/* 🌞 라이트 모드 스타일 */
+/* ====================== */
+
+body.light-mode {
+  background-color: #f4f4f4;
+  color: #222;
+}
+
+/* 로그인 카드 전체 (박스) */
+body.light-mode .login-container {
+  background-color: #ffffff; /* 흰색 카드 */
+  color: #222;               /* 글자색 어두움 */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ddd;
+}
+
+/* 입력창 */
+body.light-mode .login-container input {
+  background-color: #f9f9f9;
+  color: #222;
+  border: 1px solid #ccc;
+}
+
+/* 입력창 포커스 시 */
+body.light-mode .login-container input:focus {
+  border-color: #7b61ff; /* 살짝 보라빛 포인트 */
+  box-shadow: 0 0 5px rgba(123, 97, 255, 0.3);
+}
+
+/* 로그인 버튼 */
+body.light-mode .login-container button {
+  background: linear-gradient(90deg, #7b61ff, #8ec5fc);
+  color: #fff;
+  border: none;
+}
+
+/* 버튼 hover 효과 */
+body.light-mode .login-container button:hover {
+  opacity: 0.9;
+}
+
+/* "L.I.T.E" 로고 색상 */
+body.light-mode .login-container h1 {
+  color: #222 !important; /* 어두운 글씨로 변경 */
+}

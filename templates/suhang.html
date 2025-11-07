@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>L.I.T.E | 수행평가</title>
+    <link rel="stylesheet" href="lite_hackathon.css" />
+  </head>
+  <body>
+    <!-- 상단 헤더 -->
+    <header class="header" role="banner">
+      <button class="icon-btn" onclick="history.back()" aria-label="뒤로가기">
+        <!-- Back Icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M15 18l-6-6 6-6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+      <div class="logo">📝 수행평가</div>
+      <div style="width: 40px"></div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="container" role="main">
+      <section class="task-section">
+        <h2>수행평가 일정표</h2>
+
+        <!-- 수행평가 등록 -->
+        <form id="taskForm" class="task-form">
+          <input
+            type="text"
+            id="subject"
+            placeholder="과목명 (예: 수학)"
+            required
+          />
+          <input type="date" id="date" required />
+          <input
+            type="text"
+            id="desc"
+            placeholder="내용 또는 준비물"
+            required
+          />
+          <button type="submit">추가하기</button>
+        </form>
+
+        <!-- 수행평가 검색 -->
+        <input
+          type="search"
+          id="searchTask"
+          placeholder="과목 또는 내용 검색..."
+          autocomplete="off"
+        />
+
+        <!-- 평가 목록 -->
+        <ul id="taskList" class="task-list"></ul>
+      </section>
+    </main>
+
+    <script>
+      // 로컬스토리지에 저장될 수행평가 배열
+      let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+      const form = document.getElementById('taskForm');
+      const list = document.getElementById('taskList');
+      const search = document.getElementById('searchTask');
+
+      // 수행평가 렌더링 함수
+      function renderTasks(filter = '') {
+        list.innerHTML = '';
+        const filtered = tasks.filter(
+          (t) => t.subject.includes(filter) || t.desc.includes(filter)
+        );
+
+        filtered.forEach((task, i) => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+          <strong>${task.subject}</strong> — ${task.desc} 
+          <span class="date">(${task.date})</span>
+          <button class="remove-btn" data-index="${i}">삭제</button>
+        `;
+          list.appendChild(li);
+        });
+      }
+
+      // 추가 이벤트
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newTask = {
+          subject: subject.value.trim(),
+          date: date.value,
+          desc: desc.value.trim(),
+        };
+        tasks.push(newTask);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        renderTasks();
+        form.reset();
+      });
+
+      // 삭제 이벤트
+      list.addEventListener('click', (e) => {
+        if (e.target.classList.contains('remove-btn')) {
+          const index = e.target.dataset.index;
+          tasks.splice(index, 1);
+          localStorage.setItem('tasks', JSON.stringify(tasks));
+          renderTasks();
+        }
+      });
+
+      // 검색 이벤트
+      search.addEventListener('input', (e) =>
+        renderTasks(e.target.value.trim())
+      );
+
+      // 페이지 로드시 초기 렌더
+      renderTasks();
+    </script>
+
+    <style>
+      /* 수행평가 전용 스타일 */
+      .task-section {
+        max-width: 600px;
+        margin: 2rem auto;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      .task-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .task-form input,
+      .task-form button {
+        flex: 1;
+        padding: 0.5rem;
+        border-radius: 6px;
+        border: none;
+      }
+      .task-list {
+        list-style: none;
+        padding: 0;
+      }
+      .task-list li {
+        background: rgba(255, 255, 255, 0.08);
+        margin-bottom: 0.4rem;
+        padding: 0.6rem;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .task-list .date {
+        color: #ccc;
+        font-size: 0.85rem;
+        margin-left: 0.4rem;
+      }
+      .remove-btn {
+        background: crimson;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 0.3rem 0.6rem;
+        cursor: pointer;
+      }
+    </style>
+  </body>
+</html>
